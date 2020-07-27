@@ -34,7 +34,6 @@ object Fridge {
         } else {
           Success(new FridgeImpl(ingredientMap - ingredient))
         }
-
       } else {
         Failure(new IllegalArgumentException("can't use " + ingredient))
       }
