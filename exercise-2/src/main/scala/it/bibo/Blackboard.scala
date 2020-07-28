@@ -10,7 +10,8 @@ trait Blackboard {
 }
 
 private object Blackboard {
-  class BlackboardImpl(private var map : Map[String, Set[Task]]) extends Blackboard {
+  def empty() : Blackboard = new BlackboardImpl(Map.empty)
+  private class BlackboardImpl(private var map : Map[String, Set[Task]]) extends Blackboard {
     override def addCategory(category: String): Boolean = if(map.contains(category)) {
       false
     } else {
@@ -31,7 +32,7 @@ private object Blackboard {
       case Some(tasks) if isTaskMoveable(task, category) =>
         map += category -> (tasks + task)
         val startCategory = getCategory(task).get
-        map += startCategory -> (map(startCategory) + task)
+        map += startCategory -> (map(startCategory) - task)
         Success()
       case Some(tasks) => Failure(new IllegalStateException("cannot move task"))
       case None =>  Failure(new IllegalStateException("category not present"))
